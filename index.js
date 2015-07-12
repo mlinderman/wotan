@@ -25,12 +25,16 @@ require('./configure').config(function (err, runtimeConfig) {
     require('./routes')(app);
 
     process.on('exit', function () {
-        runtimeConfig.shutdown();
-        console.log('exiting');
+        runtimeConfig.shutdown(function(err, result) {
+            if (err) {
+                runtimeConfig.log.error('problem shutting down: ' + err);
+            }
+        });
+        runtimeConfig.log.info('exiting');
     });
 
     process.on('SIGINT', function () {
-        console.log("shutting down on request");
+        runtimeConfig.log.info("shutting down on request");
         process.exit();
     });
 

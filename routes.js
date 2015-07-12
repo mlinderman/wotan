@@ -11,9 +11,9 @@ module.exports = function (app) {
     app.get('/test', function(req, res) {
 
         res.send({
-            config: JSON.stringify(res.config);
+            port: req.config.port
         });
-    })
+    });
 
 }
 

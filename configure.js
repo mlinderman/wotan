@@ -12,7 +12,7 @@ config.shutdown = function (shutDownCallback) {
     async.parallel(
         [
             function (callback) {
-                config.mongo[appName].db.close();
+                config.mongo.db.close();
                 callback(null, true);
             }
         ],
@@ -21,9 +21,8 @@ config.shutdown = function (shutDownCallback) {
                 config.log.warn('unable to shut down completely: ' + err.message);
             } else {
                 config.log.info('shutdown complete');
-                isInitialized = false;
-                shutDownCallback();
             }
+            shutDownCallback(err, null);
         }
     );
 };
@@ -38,12 +37,12 @@ var init = function (configCallback) {
         connectionPoolSizeMax: 5,
         connectionPoolSizeMin: 2,
         connectData: {
-            mongoUrl: "mongodb://user:pass@host:port/dbnam"
+            mongoUrl: "mongodb://heroku_cc5r09sj@ds047812.mongolab.com:47812/heroku_cc5r09sj"
         },
         db: {}
     };
 
-    config.port = 3000;
+    config.port = 3050;
 
     config.log = bunyan.createLogger({
         name: appName,
@@ -62,6 +61,7 @@ var init = function (configCallback) {
     });
 
 };
+
 
 module.exports = {
     config: init

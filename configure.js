@@ -42,7 +42,7 @@ var init = function (configCallback) {
         db: {}
     };
 
-    config.port = 3050;
+    config.port = process.env.PORT || 3050;
 
     config.log = bunyan.createLogger({
         name: appName,

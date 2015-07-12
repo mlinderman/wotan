@@ -5,7 +5,8 @@ var _ = require('underscore'),
     bunyan = require("bunyan"),
     config = {},
     MongoClient = require("mongodb").MongoClient,
-    appName = 'WOTAN';
+    appName = 'WOTAN',
+    APP_DIR;
 
 config.shutdown = function (shutDownCallback) {
     // use async to handle accommodate more than one shutdown activity, even though we only have one now
@@ -28,8 +29,8 @@ config.shutdown = function (shutDownCallback) {
 };
 
 var init = function (configCallback) {
-    // middleware - logging, etc.
-    // TBD: externalize all configurations into environment specific files
+
+    APP_DIR = process.env.APP_DIR || '.';
 
     config.mongo = {
         isDBLoggingEnabled: false,
@@ -43,6 +44,10 @@ var init = function (configCallback) {
     };
 
     config.port = process.env.PORT || 3050;
+
+    config.views = {
+        'path' : APP_DIR + '/views'
+    };
 
     config.log = bunyan.createLogger({
         name: appName,

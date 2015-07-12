@@ -3,9 +3,9 @@
 var app,
     bodyParser = require('body-parser'),
     express = require("express"),
+    exphbs = require("express-handlebars"),
     cors = require("cors"),
-
-app = express();
+    app = express();
 
 require('./configure').config(function (err, runtimeConfig) {
 
@@ -13,6 +13,17 @@ require('./configure').config(function (err, runtimeConfig) {
         console.log("unable to initialize app: " + err.message);
         process.exit();
     }
+
+    // Use handlebars as the view engine.
+    app.engine('hbs', exphbs({
+        defaultLayout : 'main',
+        /*helpers : helpers,*/
+        extname : '.hbs',
+        layoutsDir : runtimeConfig.views.path + '/layouts',
+        partialsDir : runtimeConfig.views.path + '/partials'
+    }));
+    app.set('view engine', 'hbs');
+    app.set('views', runtimeConfig.views.path);
 
     app.use(bodyParser.json());
 
